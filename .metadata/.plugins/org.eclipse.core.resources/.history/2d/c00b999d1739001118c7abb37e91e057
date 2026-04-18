@@ -1,0 +1,60 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.Payment;
+import com.example.demo.dto.PaymentDTO;
+import com.example.demo.service.PaymentService;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/payments")
+public class PaymentController {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(PaymentController.class);
+
+    @Autowired
+    private PaymentService paymentService;
+
+    //  CREATE PAYMENT
+    @PostMapping
+    public PaymentDTO makePayment(@Valid @RequestBody PaymentDTO dto) {
+
+        log.info("Processing payment request: {}", dto);
+
+        Payment payment = new Payment();
+        payment.setBookingId(dto.getBookingId());
+        payment.setAmount(dto.getAmount());
+
+        Payment saved = paymentService.makePayment(payment);
+
+        PaymentDTO response = new PaymentDTO();
+        response.setBookingId(saved.getBookingId());
+        response.setAmount(saved.getAmount());
+        response.setStatus(saved.getStatus());
+
+        return response;
+    }
+
+    // ✅ GET ALL PAYMENTS
+    @GetMapping
+    public List<Payment> getAllPayments() {
+        log.info("Fetching all payments");
+        return paymentService.getAllPayments();
+    }
+
+    // ✅ GET BY BOOKING ID
+    @GetMapping("/booking/{bookingId}")
+    public List<Payment> getPaymentsByBooking(@PathVariable int bookingId) {
+        log.info("Fetching payments for booking ID: {}", bookingId);
+        return paymentService.getPaymentsByBooking(bookingId);
+    }
+}

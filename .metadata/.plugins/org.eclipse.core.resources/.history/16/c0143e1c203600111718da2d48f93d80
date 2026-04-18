@@ -1,0 +1,16 @@
+package com.example.inventory;
+@Service
+public class BillingService {
+
+    @Autowired
+    private BillRepository repo;
+
+    public Bill generateBill(Bill bill) {
+        bill.setTotal(bill.getAmount() + bill.getTax());
+        return repo.save(bill);
+    }
+
+    public List<Bill> getAllBills() {
+        return repo.findAll();
+    }
+}

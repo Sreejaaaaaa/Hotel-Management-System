@@ -1,0 +1,15 @@
+	package com.example.demo.feign;
+	
+	import java.util.List;
+	
+	import org.springframework.cloud.openfeign.FeignClient;
+	import org.springframework.web.bind.annotation.GetMapping;
+	
+	import com.example.demo.model.Payment;
+	
+	@FeignClient(name = "PAYMENT-SERVICE")
+	public interface PaymentClient {
+	
+	    @GetMapping("/payments")
+	    List<Payment> getAllPayments();
+	}

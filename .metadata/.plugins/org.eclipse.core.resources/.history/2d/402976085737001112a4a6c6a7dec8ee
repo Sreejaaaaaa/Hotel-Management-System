@@ -1,0 +1,59 @@
+package com.example.demo;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import static org.mockito.Mockito.*;
+
+class GlobalExceptionHandlerTest {
+
+    @Test
+    void testHandleValidation() {
+
+        // Mock BindingResult
+        BindingResult bindingResult = mock(BindingResult.class);
+
+        List<FieldError> errors = List.of(
+                new FieldError("payment", "bookingId", "Booking ID is required"),
+                new FieldError("payment", "amount", "Amount must be greater than 0")
+        );
+
+        when(bindingResult.getFieldErrors()).thenReturn(errors);
+
+        MethodArgumentNotValidException ex =
+                new MethodArgumentNotValidException(null, bindingResult);
+
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+
+        Map<String, String> result = handler.handleValidation(ex);
+
+        assertEquals(2, result.size());
+        assertEquals("Booking ID is required", result.get("bookingId"));
+        assertEquals("Amount must be greater than 0", result.get("amount"));
+    }
+    
+    @Test
+    void testHandleValidationEmptyErrors() {
+
+        BindingResult bindingResult = mock(BindingResult.class);
+
+        when(bindingResult.getFieldErrors()).thenReturn(List.of()); // empty list
+
+        MethodArgumentNotValidException ex =
+                new MethodArgumentNotValidException(null, bindingResult);
+
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+
+        Map<String, String> result = handler.handleValidation(ex);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());   // ✅ important for branch coverage
+    }
+}

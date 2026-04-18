@@ -1,0 +1,68 @@
+package com.example.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
+
+import com.example.demo.filter.JwtAuthFilter;
+@Configuration
+public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+
+        return http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+
+                .authorizeExchange(ex -> ex
+                		
+                		.pathMatchers(
+                		        "/swagger-ui.html",
+                		        "/swagger-ui/**",
+                		        "/v3/api-docs/**",
+                		        "/webjars/**"                		    
+                		    ).permitAll()
+                        // Public
+                        //.pathMatchers("/auth-service/auth/**").permitAll()
+                		.pathMatchers("/auth-service/**").permitAll()
+                        .pathMatchers("/user-service/users").permitAll()
+                        // Staff
+                        .pathMatchers("/user-service/users/staff/**")
+                        .hasRole("OWNER")
+                        // Rooms
+                        .pathMatchers("/room-service/rooms/**")
+                        .hasAnyRole("OWNER", "MANAGER")
+                        // Booking
+                        .pathMatchers("/booking-service/booking/**")
+                        .hasAnyRole("OWNER", "MANAGER", "RECEPTIONIST")
+                        // Payment
+                        .pathMatchers("/payment-service/payments/**")
+                        .hasAnyRole("OWNER", "RECEPTIONIST")
+                        .anyExchange().authenticated()
+                )
+                // ✅ FIXED FILTER
+                .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                .build();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+

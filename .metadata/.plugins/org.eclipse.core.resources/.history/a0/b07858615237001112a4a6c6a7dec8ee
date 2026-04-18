@@ -1,0 +1,12 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.Payment;
+import com.example.demo.repository.PaymentRepository;
+
+public class PaymentService {
+	private PaymentRepository paymentRepository;
+	private Payment makePayment (Payment payment) {
+		return paymentRepository.save(payment);
+	}
+	
+}

@@ -1,0 +1,36 @@
+//package com.example.demo.entity;
+//
+//import static org.junit.jupiter.api.Assertions.*;
+//import org.junit.jupiter.api.Test;
+//
+//public class BookingTest {
+//
+//    @Test
+//    void testGettersSetters() {
+//        Booking b = new Booking();
+//
+//        b.setguestId(1);
+//        b.setRoomId(101);
+//        b.setHotelName("Taj");
+//
+//        assertEquals(1, b.getguestId());
+//        assertEquals(101, b.getRoomId());
+//        assertEquals("Taj", b.getHotelName());
+//    }
+//
+//    @Test
+//    void testObjectCreation() {
+//        Booking b = new Booking();
+//        assertNotNull(b);
+//    }
+//
+//    // Optional but helps coverage
+//    @Test
+//    void testParameterizedConstructor() {
+//        Booking b = new Booking(1, 101, "Taj");
+//
+//        assertEquals(1, b.getguestId());
+//        assertEquals(101, b.getRoomId());
+//        assertEquals("Taj", b.getHotelName());
+//    }
+//}

@@ -1,0 +1,45 @@
+package com.example.demo.entity;
+import jakarta.validation.constraints.*;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "bookings")
+public class Booking {
+	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+     private Integer guestId;
+
+    @NotNull(message = "Room ID is required")
+    private Integer roomId;
+
+    @NotBlank(message = "Status is required")
+    private String status;  
+
+    public Booking() {}
+
+    public Booking(int guestId, int roomId) {
+        this.guestId = guestId;
+        this.roomId = roomId;
+        
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    
+    public int getGuestId() { return guestId; }
+    public void setGuestId(int guestId) { this.guestId = guestId; }
+
+    public int getRoomId() { return roomId; }
+    public void setRoomId(int roomId) { this.roomId = roomId; }
+
+
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+}

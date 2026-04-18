@@ -1,0 +1,88 @@
+//package com.example.demo.service;
+//
+//import static org.mockito.Mockito.*;
+//import static org.junit.jupiter.api.Assertions.*;
+//
+//import java.util.Map;
+//import java.util.concurrent.CompletableFuture;
+//
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//
+//import com.example.demo.entity.Booking;
+//import com.example.demo.entity.Guest;
+//import com.example.demo.model.BookingRequest;
+//import com.example.demo.feign.RoomClient;
+//import com.example.demo.feign.PaymentClient;
+//import com.example.demo.repository.BookingRepository;
+//import com.example.demo.repository.GuestRepository;
+//
+//@ExtendWith(MockitoExtension.class)
+//public class BookingServiceTest {
+//
+//    @Mock
+//    private BookingRepository bookingRepository;
+//
+//    @Mock
+//    private GuestRepository guestRepository;
+//
+//    @Mock
+//    private RoomClient roomClient;
+//
+//    @Mock
+//    private PaymentClient paymentClient;
+//
+//    @InjectMocks
+//    private BookingService bookingService;
+//
+//    @Test
+//    void testCreateBookingAsync() throws Exception {
+//
+//        // 🔹 Guest input
+//        Guest guest = new Guest();
+//        guest.setName("Test");
+//        guest.setPhone("9999999999");
+//
+//        // 🔹 Booking input
+//        Booking booking = new Booking();
+//        booking.setRoomId(101);
+//
+//        // 🔹 Request wrapper
+//        BookingRequest request = new BookingRequest();
+//        request.setGuest(guest);
+//        request.setBooking(booking);
+//
+//        // 🔹 Mock saved guest
+//        Guest savedGuest = new Guest();
+//        savedGuest.setId(1);
+//
+//        // 🔹 Mock saved booking
+//        Booking savedBooking = new Booking();
+//        savedBooking.setguestId(1);
+//        savedBooking.setRoomId(101);
+//
+//        // 🔹 Mock behaviors
+//        when(guestRepository.save(any(Guest.class))).thenReturn(savedGuest);
+//        when(bookingRepository.save(any(Booking.class))).thenReturn(savedBooking);
+//        when(roomClient.getRoomById(101)).thenReturn("Room Data");
+//        when(paymentClient.makePayment(any(Map.class))).thenReturn("Payment Done");
+//
+//        // 🔹 Call method
+//        CompletableFuture<Object> result =
+//                bookingService.createBookingAsync(request);
+//
+//        // 🔹 Get response
+//        Map<String, Object> response = (Map<String, Object>) result.get();
+//
+//        // 🔹 Assertions
+//        assertNotNull(response);
+//        assertEquals("Room Data", response.get("room"));
+//        assertEquals("Payment Done", response.get("payment"));
+//        assertNotNull(response.get("booking"));
+//        assertNotNull(response.get("guest"));
+//    }
+//}

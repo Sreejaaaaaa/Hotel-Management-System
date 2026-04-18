@@ -1,0 +1,47 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.client.UserClient;
+import com.example.demo.model.User;
+import com.example.demo.security.JwtUtil;
+
+@Service
+public class AuthService {
+
+    @Autowired
+    private UserClient userClient;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    
+    public String login(User user) {
+
+        
+        User existingUser = userClient.getUserByEmail(user.getEmail());
+
+        // Debug logs
+        System.out.println("Existing User: " + existingUser);
+        if (existingUser != null) {
+            System.out.println("Password from DB: " + existingUser.getPassword());
+            System.out.println("Role from DB: " + existingUser.getRole());
+        }
+        System.out.println("Input Password: " + user.getPassword());
+
+        //  Authentication logic
+        if (existingUser != null &&
+            existingUser.getPassword() != null &&
+            existingUser.getPassword().equals(user.getPassword())) {
+
+            return jwtUtil.generateToken(
+                    existingUser.getEmail(),
+                    existingUser.getRole()
+            );
+        } else {
+            return "Invalid Credentials";
+        }
+    }
+    
+}

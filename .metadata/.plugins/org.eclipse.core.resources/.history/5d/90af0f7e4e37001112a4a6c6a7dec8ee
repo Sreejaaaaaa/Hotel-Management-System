@@ -1,0 +1,109 @@
+//package com.example.demo.controller;
+//
+//import static org.mockito.Mockito.*;
+//import static org.junit.jupiter.api.Assertions.*;
+//
+//import java.util.*;
+//import java.util.concurrent.CompletableFuture;
+//
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//
+//import com.example.demo.entity.Booking;
+//import com.example.demo.entity.Guest;
+//import com.example.demo.model.BookingRequest;
+//import com.example.demo.repository.BookingRepository;
+//import com.example.demo.service.BookingService;
+//
+//@ExtendWith(MockitoExtension.class)
+//public class BookingControllerTest {
+//
+//    @Mock
+//    private BookingService bookingService;
+//
+//    @Mock
+//    private BookingRepository bookingRepository;
+//
+//    @InjectMocks
+//    private BookingController bookingController;
+//
+//    // ✅ TEST CREATE BOOKING
+//    @Test
+//    void testCreateBooking() throws Exception {
+//
+//        Guest guest = new Guest();
+//        guest.setName("Test User");
+//
+//        Booking booking = new Booking();
+//        booking.setRoomId(101);
+//        
+//        BookingRequest request = new BookingRequest();
+//        request.setGuest(guest);
+//        request.setBooking(booking);
+//
+//        Map<String, Object> mockResponse = Map.of(
+//                "booking", booking,
+//                "guest", guest,
+//                "room", "Room Data",
+//                "payment", "Payment Done"
+//        );
+//
+//        when(bookingService.createBookingAsync(any()))
+//                .thenReturn(CompletableFuture.completedFuture(mockResponse));
+//
+//        CompletableFuture<Object> result =
+//                bookingController.createBooking(request);
+//
+//        Map<String, Object> response = (Map<String, Object>) result.get();
+//
+//        assertNotNull(response);
+//        assertEquals("Room Data", response.get("room"));
+//        assertEquals("Payment Done", response.get("payment"));
+//    }
+//
+//    // ✅ TEST GET ALL BOOKINGS
+//    @Test
+//    void testGetAllBookings() {
+//
+//        Booking b1 = new Booking();
+//        Booking b2 = new Booking();
+//
+//        when(bookingRepository.findAll())
+//                .thenReturn(Arrays.asList(b1, b2));
+//
+//        List<Booking> result = bookingController.getAllBookings();
+//
+//        assertEquals(2, result.size());
+//    }
+//
+//    // ✅ TEST UPDATE BOOKING
+//    @Test
+//    void testUpdateBooking() {
+//
+//        Booking booking = new Booking();
+//        booking.setRoomId(101);
+//
+//        when(bookingRepository.save(any()))
+//                .thenReturn(booking);
+//
+//        Booking updated =
+//                bookingController.updateBooking(1, booking);
+//
+//        assertEquals(101, updated.getRoomId());
+//    }
+//
+//    // ✅ TEST DELETE BOOKING
+//    @Test
+//    void testDeleteBooking() {
+//
+//        doNothing().when(bookingRepository).deleteById(1);
+//
+//        String result = bookingController.deleteBooking(1);
+//
+//        assertEquals("Booking deleted successfully", result);
+//    }
+//}

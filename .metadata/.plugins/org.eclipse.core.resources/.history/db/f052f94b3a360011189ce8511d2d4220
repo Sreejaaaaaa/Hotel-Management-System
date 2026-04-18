@@ -1,0 +1,83 @@
+package com.example.demo.service;
+
+import java.util.HashMap;
+import com.example.billing.feign.BillingClient;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Booking;
+import com.example.demo.feign.PaymentClient;
+import com.example.demo.feign.RoomClient;
+import com.example.demo.model.BookingRequest;
+import com.example.demo.model.Room;
+import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.GuestRepository;
+
+@Service
+public class BookingService {
+
+    @Autowired
+    private GuestRepository guestRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private RoomClient roomClient;
+
+    @Autowired
+    private PaymentClient paymentClient; // ✅ Added
+    
+    @Autowired
+    private BillingClient billingClient;
+
+    @Async
+    public CompletableFuture<Booking> createBooking(BookingRequest request) {
+
+        // 🔹 Step 0: Save Guest FIRST
+        var savedGuest = guestRepository.save(request.getGuest());
+
+        // 🔹 Get booking
+        Booking booking = request.getBooking();
+
+        // 🔹 Set correct guestId
+        booking.setGuestId(savedGuest.getId());
+
+        // 🔹 Step 1: Get room
+        Room room = roomClient.getRoomById(booking.getRoomId());
+        System.out.println("Room from service: " + room);
+
+        // 🔹 Step 2: Check availability
+        if (room == null || !room.isAvailable()) {
+            throw new RuntimeException("Room not available");
+        }
+
+        // 🔹 Step 3: Mark room as booked
+        room.setAvailable(false);
+        roomClient.updateRoom(room.getId(), room);
+
+        // 🔹 Step 4: Save booking
+        booking.setStatus("CONFIRMED");
+        Booking saved = bookingRepository.save(booking);
+
+        // 🔹 Step 5: Payment
+        Map<String, Object> paymentRequest = new HashMap<>();
+        paymentRequest.put("bookingId", saved.getId());
+        paymentRequest.put("amount", room.getPrice());
+
+        paymentClient.makePayment(paymentRequest);
+
+        // 🔥 Step 6: BILLING (ADD THIS)
+        Map<String, Object> billRequest = new HashMap<>();
+        billRequest.put("bookingId", saved.getId());
+        billRequest.put("amount", room.getPrice());
+        billRequest.put("tax", room.getPrice() * 0.1);
+
+        billingClient.generateBill(billRequest);
+
+        return CompletableFuture.completedFuture(saved);
+    }

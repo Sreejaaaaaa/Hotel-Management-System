@@ -1,0 +1,23 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class AuthServiceApplicationTest {
+
+    @Test
+    void contextLoads() {
+     }
+    package com.example.demo;
+
+    import org.junit.jupiter.api.Test;
+
+    class ApiGatewayApplicationTest {
+
+        @Test
+        void mainTest() {
+            ApiGatewayApplication.main(new String[] {});
+        }
+    }
+}

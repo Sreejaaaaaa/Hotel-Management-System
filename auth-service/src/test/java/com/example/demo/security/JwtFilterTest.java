@@ -1,0 +1,89 @@
+package com.example.demo.security;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.*;
+
+class JwtFilterTest {
+
+    @Mock
+    private JwtUtil jwtUtil;
+
+    @InjectMocks
+    private JwtFilter jwtFilter;
+
+    public JwtFilterTest() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testDoFilterInternal_NoHeader() throws Exception {
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
+
+        when(request.getServletPath()).thenReturn("/test");
+        when(request.getHeader("Authorization")).thenReturn(null);
+
+        jwtFilter.doFilterInternal(request, response, chain);
+
+        verify(chain, times(1)).doFilter(request, response);
+    }
+
+    @Test
+    void testDoFilterInternal_SkipAuthPath() throws Exception {
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
+
+        when(request.getServletPath()).thenReturn("/auth/login");
+
+        jwtFilter.doFilterInternal(request, response, chain);
+
+        verify(chain, times(1)).doFilter(request, response);
+    }
+    
+    @Test
+    void testDoFilterInternal_WithValidToken() throws Exception {
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
+
+        when(request.getServletPath()).thenReturn("/secure");
+        when(request.getHeader("Authorization")).thenReturn("Bearer token");
+
+        when(jwtUtil.extractEmail("token")).thenReturn("test@mail.com");
+        when(jwtUtil.extractRole("token")).thenReturn("OWNER");
+        when(jwtUtil.validateToken("token", "test@mail.com")).thenReturn(true);
+
+        jwtFilter.doFilterInternal(request, response, chain);
+
+        verify(chain, times(1)).doFilter(request, response);
+    }
+    @Test
+    void testDoFilterInternal_InvalidToken() throws Exception {
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
+
+        when(request.getServletPath()).thenReturn("/secure");
+        when(request.getHeader("Authorization")).thenReturn("Bearer token");
+
+        when(jwtUtil.extractEmail("token")).thenThrow(new RuntimeException());
+
+        jwtFilter.doFilterInternal(request, response, chain);
+
+        verify(chain, times(1)).doFilter(request, response);
+    }
+}

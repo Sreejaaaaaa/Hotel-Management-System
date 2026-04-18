@@ -1,0 +1,14 @@
+package com.example.S;
+@Service
+public class ReportService {
+
+    @Autowired
+    private PaymentClient paymentClient;
+
+    public double getTotalIncome() {
+        return paymentClient.getAllPayments()
+                .stream()
+                .mapToDouble(p -> p.getAmount())
+                .sum();
+    }
+}

@@ -1,0 +1,50 @@
+	package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.Payment;
+import com.example.demo.repository.PaymentRepository;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import jakarta.validation.Valid;
+@RestController
+@RequestMapping("/payments")
+public class PaymentController {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(PaymentController.class);
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @PostMapping
+    public Payment makePayment(@Valid @RequestBody Payment payment) {
+        log.info("Processing payment request: {}", payment);
+
+        payment.setStatus("SUCCESS"); 
+        Payment saved = paymentRepository.save(payment);
+
+        log.info("Payment successful for booking ID: {}", saved.getBookingId());
+        return saved;
+    }
+
+    @GetMapping
+    public List<Payment> getAllPayments() {
+        log.info("Fetching all payments");
+        return paymentRepository.findAll();
+    }
+
+    @GetMapping("/booking/{bookingId}")
+    public List<Payment> getPaymentsByBooking(@PathVariable int bookingId) {
+        log.info("Fetching payments for booking ID: {}", bookingId);
+
+        return paymentRepository.findAll()
+                .stream()
+                .filter(p -> p.getBookingId() == bookingId)
+                .toList();
+    }
+}

@@ -1,0 +1,5 @@
+package com.example.billing.config;
+
+public class BillingServiceApplicationTest {
+
+}

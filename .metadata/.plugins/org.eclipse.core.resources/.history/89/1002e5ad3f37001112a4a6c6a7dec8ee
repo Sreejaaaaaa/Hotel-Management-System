@@ -1,0 +1,17 @@
+package com.example.demo.security;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SecurityConfigTest {
+
+    @Test
+    void testSecurityConfig() throws Exception {
+        SecurityConfig config = new SecurityConfig();
+        HttpSecurity http = new HttpSecurity(null, null, null, null, null, null, null);
+
+        assertNotNull(config);
+    }
+}

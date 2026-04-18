@@ -1,0 +1,134 @@
+2026-04-15T21:26:23.903+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] c.e.demo.BookingServiceApplication       : Starting BookingServiceApplication using Java 17.0.18 with PID 16968 (C:\project\booking-service\target\classes started by HP in C:\project\booking-service)
+2026-04-15T21:26:23.908+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] c.e.demo.BookingServiceApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-04-15T21:26:24.744+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-15T21:26:24.867+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 115 ms. Found 2 JPA repository interfaces.
+2026-04-15T21:26:25.089+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=489127cc-3bdc-3b0c-8dff-e473e321806b
+2026-04-15T21:26:25.240+05:30  WARN 16968 --- [BOOKING-SERVICE] [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2026-04-15T21:26:25.242+05:30  WARN 16968 --- [BOOKING-SERVICE] [main] trationDelegate$BeanPostProcessorChecker : Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2026-04-15T21:26:25.428+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-04-15T21:26:25.439+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-15T21:26:25.440+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-15T21:26:25.519+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-15T21:26:25.521+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1500 ms
+2026-04-15T21:26:25.652+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-15T21:26:25.700+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-04-15T21:26:25.748+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-15T21:26:25.919+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-15T21:26:25.946+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-15T21:26:26.185+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@70840a5a
+2026-04-15T21:26:26.188+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-15T21:26:26.246+05:30  WARN 16968 --- [BOOKING-SERVICE] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-15T21:26:26.978+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-15T21:26:27.071+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-15T21:26:27.400+05:30  WARN 16968 --- [BOOKING-SERVICE] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-15T21:26:27.613+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'ROOM-SERVICE' URL not provided. Will try picking an instance via load-balancing.
+2026-04-15T21:26:27.669+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'PAYMENT-SERVICE' URL not provided. Will try picking an instance via load-balancing.
+2026-04-15T21:26:27.690+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'BILLING-SERVICE' URL not provided. Will try picking an instance via load-balancing.
+2026-04-15T21:26:28.244+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-04-15T21:26:28.278+05:30  WARN 16968 --- [BOOKING-SERVICE] [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-04-15T21:26:28.336+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-04-15T21:26:28.371+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-04-15T21:26:28.376+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-15T21:26:28.401+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-04-15T21:26:28.402+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-04-15T21:26:28.403+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-04-15T21:26:28.403+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-04-15T21:26:28.403+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-04-15T21:26:28.403+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-04-15T21:26:28.403+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-04-15T21:26:28.835+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-04-15T21:26:28.837+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-04-15T21:26:28.840+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-04-15T21:26:28.844+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1776268588843 with initial instances count: 0
+2026-04-15T21:26:28.847+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application BOOKING-SERVICE with eureka with status UP
+2026-04-15T21:26:28.848+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1776268588848, current=UP, previous=STARTING]
+2026-04-15T21:26:28.850+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082: registering service...
+2026-04-15T21:26:28.876+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path ''
+2026-04-15T21:26:28.878+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2026-04-15T21:26:28.982+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082 - registration status: 204
+2026-04-15T21:26:29.020+05:30  INFO 16968 --- [BOOKING-SERVICE] [main] c.e.demo.BookingServiceApplication       : Started BookingServiceApplication in 5.552 seconds (process running for 6.09)
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2026-04-15T21:26:58.841+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-04-15T21:26:58.898+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-CacheRefreshExecutor-0] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-04-15T21:30:21.493+05:30  INFO 16968 --- [BOOKING-SERVICE] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-15T21:30:21.495+05:30  INFO 16968 --- [BOOKING-SERVICE] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-15T21:30:21.498+05:30  INFO 16968 --- [BOOKING-SERVICE] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-04-15T21:31:16.137+05:30  INFO 16968 --- [BOOKING-SERVICE] [http-nio-8082-exec-4] c.e.demo.controller.BookingController    : Fetching all bookings
+2026-04-15T21:31:28.401+05:30  INFO 16968 --- [BOOKING-SERVICE] [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-15T21:34:29.262+05:30  WARN 16968 --- [BOOKING-SERVICE] [task-1] o.s.c.l.core.RoundRobinLoadBalancer      : No servers available for service: ROOM-SERVICE
+2026-04-15T21:34:29.281+05:30  WARN 16968 --- [BOOKING-SERVICE] [task-1] .s.c.o.l.FeignBlockingLoadBalancerClient : Load balancer does not contain an instance for the service ROOM-SERVICE
+2026-04-15T21:34:29.333+05:30 ERROR 16968 --- [BOOKING-SERVICE] [http-nio-8082-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] threw exception
+
+feign.FeignException$ServiceUnavailable: [503] during [GET] to [http://ROOM-SERVICE/rooms/101] [RoomClient#getRoomById(int)]: [Load balancer does not contain an instance for the service ROOM-SERVICE]
+	at feign.FeignException.serverErrorStatus(FeignException.java:265) ~[feign-core-13.2.1.jar:na]
+	at feign.FeignException.errorStatus(FeignException.java:206) ~[feign-core-13.2.1.jar:na]
+	at feign.FeignException.errorStatus(FeignException.java:194) ~[feign-core-13.2.1.jar:na]
+	at feign.codec.ErrorDecoder$Default.decode(ErrorDecoder.java:103) ~[feign-core-13.2.1.jar:na]
+	at feign.InvocationContext.decodeError(InvocationContext.java:126) ~[feign-core-13.2.1.jar:na]
+	at feign.InvocationContext.proceed(InvocationContext.java:72) ~[feign-core-13.2.1.jar:na]
+	at feign.ResponseHandler.handleResponse(ResponseHandler.java:63) ~[feign-core-13.2.1.jar:na]
+	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:114) ~[feign-core-13.2.1.jar:na]
+	at feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:70) ~[feign-core-13.2.1.jar:na]
+	at feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:99) ~[feign-core-13.2.1.jar:na]
+	at jdk.proxy2/jdk.proxy2.$Proxy152.getRoomById(Unknown Source) ~[na:na]
+	at com.example.demo.service.BookingService.createBooking(BookingService.java:47) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.interceptor.AsyncExecutionInterceptor.lambda$invoke$0(AsyncExecutionInterceptor.java:113) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.util.concurrent.FutureUtils.lambda$toSupplier$0(FutureUtils.java:74) ~[spring-core-6.1.6.jar:6.1.6]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2026-04-15T21:34:29.340+05:30 ERROR 16968 --- [BOOKING-SERVICE] [http-nio-8082-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: feign.FeignException$ServiceUnavailable: [503] during [GET] to [http://ROOM-SERVICE/rooms/101] [RoomClient#getRoomById(int)]: [Load balancer does not contain an instance for the service ROOM-SERVICE]] with root cause
+
+feign.FeignException$ServiceUnavailable: [503] during [GET] to [http://ROOM-SERVICE/rooms/101] [RoomClient#getRoomById(int)]: [Load balancer does not contain an instance for the service ROOM-SERVICE]
+	at feign.FeignException.serverErrorStatus(FeignException.java:265) ~[feign-core-13.2.1.jar:na]
+	at feign.FeignException.errorStatus(FeignException.java:206) ~[feign-core-13.2.1.jar:na]
+	at feign.FeignException.errorStatus(FeignException.java:194) ~[feign-core-13.2.1.jar:na]
+	at feign.codec.ErrorDecoder$Default.decode(ErrorDecoder.java:103) ~[feign-core-13.2.1.jar:na]
+	at feign.InvocationContext.decodeError(InvocationContext.java:126) ~[feign-core-13.2.1.jar:na]
+	at feign.InvocationContext.proceed(InvocationContext.java:72) ~[feign-core-13.2.1.jar:na]
+	at feign.ResponseHandler.handleResponse(ResponseHandler.java:63) ~[feign-core-13.2.1.jar:na]
+	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:114) ~[feign-core-13.2.1.jar:na]
+	at feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:70) ~[feign-core-13.2.1.jar:na]
+	at feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:99) ~[feign-core-13.2.1.jar:na]
+	at jdk.proxy2/jdk.proxy2.$Proxy152.getRoomById(Unknown Source) ~[na:na]
+	at com.example.demo.service.BookingService.createBooking(BookingService.java:47) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.interceptor.AsyncExecutionInterceptor.lambda$invoke$0(AsyncExecutionInterceptor.java:113) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.util.concurrent.FutureUtils.lambda$toSupplier$0(FutureUtils.java:74) ~[spring-core-6.1.6.jar:6.1.6]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2026-04-15T21:36:28.398+05:30  INFO 16968 --- [BOOKING-SERVICE] [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-15T21:36:51.895+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2026-04-15T21:36:51.896+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application BOOKING-SERVICE with eureka with status DOWN
+2026-04-15T21:36:51.897+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1776269211897, current=DOWN, previous=UP]
+2026-04-15T21:36:51.901+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082: registering service...
+2026-04-15T21:36:51.922+05:30  INFO 16968 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082 - registration status: 204
+2026-04-15T21:36:51.943+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-15T21:36:51.949+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-15T21:36:51.959+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-15T21:36:51.960+05:30  INFO 16968 --- [BOOKING-SERVICE] [RMI TCP Connection(13)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...

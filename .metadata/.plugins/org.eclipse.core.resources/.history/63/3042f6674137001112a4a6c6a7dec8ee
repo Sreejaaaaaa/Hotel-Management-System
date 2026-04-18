@@ -1,0 +1,53 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.User;
+import com.example.demo.security.JwtFilter;
+import com.example.demo.security.JwtUtil;
+import com.example.demo.service.AuthService;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(AuthController.class)
+class AuthControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private AuthService authService;
+
+    // 🔥 ADD THESE (VERY IMPORTANT)
+    @MockBean
+    private JwtFilter jwtFilter;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
+    @Test
+    void testLogin() throws Exception {
+
+        when(authService.login(org.mockito.ArgumentMatchers.any(User.class)))
+                .thenReturn("dummy-token");
+
+        String json = """
+                {
+                  "email": "test@gmail.com",
+                  "password": "1234"
+                }
+                """;
+
+        mockMvc.perform(post("/auth/login")
+                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf()) // ✅ FIX
+                .contentType("application/json")
+                .content(json))
+                .andExpect(status().isOk())
+                .andExpect(content().string("dummy-token"));
+    }

@@ -1,0 +1,128 @@
+package com.example.demo.controller;
+
+import jakarta.validation.Valid;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.Booking;
+import com.example.demo.entity.Guest;
+import com.example.demo.model.BookingRequest;
+import com.example.demo.dto.BookingDTO;
+import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.GuestRepository;
+import com.example.demo.service.BookingService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@RestController
+@RequestMapping("/booking")
+public class BookingController {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(BookingController.class);
+
+    @Autowired
+    private BookingService bookingService;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private GuestRepository guestRepository;
+
+    // ✅ ADD GUEST (kept same)
+    @PostMapping("/guest")
+    public Guest addGuest(@RequestBody Guest guest) {
+        return guestRepository.save(guest);
+    }
+
+    // ✅ CREATE BOOKING (already using DTO: BookingRequest)
+    @PostMapping
+    public CompletableFuture<Map<String, Object>> createBooking(@Valid @RequestBody BookingRequest request) {
+        return bookingService.createBooking(request);
+    }
+
+    // ✅ VIEW BOOKINGS (converted to DTO)
+    @GetMapping("/all")
+    public List<BookingDTO> getAllBookings() {
+        log.info("Fetching all bookings");
+
+        return bookingRepository.findAll()
+                .stream()
+                .map(b -> {
+                    BookingDTO dto = new BookingDTO();
+                    dto.setBookingId(b.getId());
+                    dto.setRoomId(b.getRoomId());
+                    dto.setGuestId(b.getGuestId());
+                    dto.setStatus(b.getStatus());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // ✅ DELETE BOOKING
+    @DeleteMapping("/{id}")
+    public String deleteBooking(@PathVariable int id) {
+        bookingRepository.deleteById(id);
+        return "Booking deleted successfully";
+    }
+
+    // ✅ UPDATE BOOKING (NOW USING DTO)
+    @PutMapping("/update/{id}")
+    public BookingDTO updateBooking(@PathVariable int id, @RequestBody BookingDTO dto) {
+
+        Booking existing = bookingRepository.findById(id).orElse(null);
+
+        if (existing == null) {
+            throw new RuntimeException("Booking not found");
+        }
+
+        // DTO → Entity
+        existing.setRoomId(dto.getRoomId());
+        existing.setGuestId(dto.getGuestId());
+        existing.setStatus(dto.getStatus());
+
+        Booking saved = bookingRepository.save(existing);
+
+        // Entity → DTO
+        BookingDTO response = new BookingDTO();
+        response.setBookingId(saved.getBookingId());
+        response.setRoomId(saved.getRoomId());
+        response.setGuestId(saved.getGuestId());
+        response.setStatus(saved.getStatus());
+
+        return response;
+    }
+
+    // ✅ UPDATE GUEST (kept same)
+    @PutMapping("/guest/{id}")
+    public Guest updateGuest(@PathVariable int id, @RequestBody Guest guest) {
+
+        Guest existing = guestRepository.findById(id).orElse(null);
+
+        if (existing == null) {
+            throw new RuntimeException("Guest not found");
+        }
+
+        existing.setName(guest.getName());
+        existing.setEmail(guest.getEmail());
+        existing.setPhone(guest.getPhone());
+        existing.setAddress(guest.getAddress());
+        existing.setGender(guest.getGender());
+
+        return guestRepository.save(existing);
+    }
+
+    // ✅ DELETE GUEST
+    @DeleteMapping("/guest/{id}")
+    public String deleteGuest(@PathVariable int id) {
+        guestRepository.deleteById(id);
+        return "Guest deleted successfully";
+    }
+}
