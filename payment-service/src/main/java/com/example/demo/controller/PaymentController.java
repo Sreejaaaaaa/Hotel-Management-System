@@ -24,7 +24,6 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    //  CREATE PAYMENT
     @PostMapping
     public PaymentDTO makePayment(@Valid @RequestBody PaymentDTO dto) {
 
@@ -36,25 +35,48 @@ public class PaymentController {
 
         Payment saved = paymentService.makePayment(payment);
 
-        PaymentDTO response = new PaymentDTO();
-        response.setBookingId(saved.getBookingId());
-        response.setAmount(saved.getAmount());
-        response.setStatus(saved.getStatus());
-
-        return response;
+        return convertToDTO(saved);
     }
 
-    // GET ALL PAYMENTS
     @GetMapping
-    public List<Payment> getAllPayments() {
+    public List<PaymentDTO> getAllPayments() {
+
         log.info("Fetching all payments");
-        return paymentService.getAllPayments();
+
+        return paymentService.getAllPayments()
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
-    // GET BY BOOKING ID
     @GetMapping("/booking/{bookingId}")
-    public List<Payment> getPaymentsByBooking(@PathVariable int bookingId) {
+    public List<PaymentDTO> getPaymentsByBooking(@PathVariable int bookingId) {
+
         log.info("Fetching payments for booking ID: {}", bookingId);
-        return paymentService.getPaymentsByBooking(bookingId);
+
+        return paymentService.getPaymentsByBooking(bookingId)
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
+ 
+    @PostMapping("/verify")
+    public String verifyPayment() {
+
+        log.info("Verifying payment (simulation)");
+
+        return paymentService.verifyPayment();
+    }
+
+    private PaymentDTO convertToDTO(Payment p) {
+
+        PaymentDTO dto = new PaymentDTO();
+        dto.setBookingId(p.getBookingId());
+        dto.setAmount(p.getAmount());
+        dto.setStatus(p.getStatus());
+        dto.setTransactionId(p.getTransactionId());
+
+        return dto;
     }
 }

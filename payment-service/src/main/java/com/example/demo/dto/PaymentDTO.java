@@ -12,6 +12,7 @@ public class PaymentDTO {
     private double amount;
 
     private String status;
+    private String transactionId;
 
     // Getters and Setters
     public Integer getBookingId() {
@@ -36,5 +37,13 @@ public class PaymentDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

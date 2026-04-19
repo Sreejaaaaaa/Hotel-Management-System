@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 @Entity
 @Table(name = "payments")
 public class Payment {
@@ -17,7 +18,10 @@ public class Payment {
     private double amount;
 
     @NotBlank(message = "Status is required")
-    private String status;    // SUCCESS / FAILED
+    private String status;   // SUCCESS / FAILED
+
+    @Column(name = "transaction_id")
+    private String transactionId;  
 
     public Payment() {}
 
@@ -37,4 +41,12 @@ public class Payment {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
 }
