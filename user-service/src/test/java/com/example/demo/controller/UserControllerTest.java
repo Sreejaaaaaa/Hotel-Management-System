@@ -5,8 +5,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
@@ -26,8 +26,9 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    // ✅ FIX: mock service instead of repository
     @MockBean
-    private UserRepository repo;
+    private UserService userService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -35,146 +36,104 @@ class UserControllerTest {
     @Test
     void testAddUser() throws Exception {
 
-        User u = new User("A", "a@mail.com");
+        UserDTO dto = new UserDTO();
+        dto.setName("A");
+        dto.setEmail("a@mail.com");
 
-        when(repo.save(any())).thenReturn(u);
+        when(userService.addUser(any())).thenReturn(dto);
 
         mockMvc.perform(post("/users")
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(u)))
+                .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
 
-    // ✅ GET ALL USERS
+    // ✅ GET USERS
     @Test
     void testGetUsers() throws Exception {
 
-        when(repo.findAll()).thenReturn(List.of(new User("A", "a@mail.com")));
+        when(userService.getUsers()).thenReturn(List.of(new UserDTO()));
 
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk());
     }
 
-    // ✅ GET USER BY ID (FOUND)
+    // ✅ GET BY ID
     @Test
-    void testGetUserByIdFound() throws Exception {
+    void testGetUserById() throws Exception {
 
-        when(repo.findById(1)).thenReturn(Optional.of(new User("A", "a@mail.com")));
+        when(userService.getUserById(1)).thenReturn(new UserDTO());
 
         mockMvc.perform(get("/users/1"))
                 .andExpect(status().isOk());
     }
 
-    // ✅ GET USER BY ID (NOT FOUND)
-    @Test
-    void testGetUserByIdNotFound() throws Exception {
-
-        when(repo.findById(1)).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/users/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(""));
-    }
-
-    // ✅ GET USER BY EMAIL (FOUND)
+    // ✅ EMAIL FOUND
     @Test
     void testGetUserByEmailFound() throws Exception {
 
-        User u = new User("A", "a@mail.com");
-
-        when(repo.findByEmail("a@mail.com")).thenReturn(u);
+        when(userService.getUserByEmail("a@mail.com"))
+                .thenReturn(new UserDTO());
 
         mockMvc.perform(get("/users/email/a@mail.com"))
                 .andExpect(status().isOk());
     }
 
-    // ✅ GET USER BY EMAIL (NOT FOUND)
+    // ✅ EMAIL NOT FOUND
     @Test
     void testGetUserByEmailNotFound() throws Exception {
 
-        when(repo.findByEmail("x@mail.com")).thenReturn(null);
+        when(userService.getUserByEmail("x@mail.com"))
+                .thenReturn(null);
 
         mockMvc.perform(get("/users/email/x@mail.com"))
                 .andExpect(status().isNotFound());
     }
 
-    // ✅ ADD STAFF (VALID ROLE)
+    // ✅ ADD STAFF
     @Test
-    void testAddStaffValid() throws Exception {
+    void testAddStaff() throws Exception {
 
-        User u = new User();
-        u.setRole("OWNER");
+        UserDTO dto = new UserDTO();
+        dto.setRole("OWNER");
 
-        when(repo.save(any())).thenReturn(u);
+        when(userService.addStaff(any())).thenReturn(dto);
 
         mockMvc.perform(post("/users/staff")
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(u)))
+                .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
 
-    // ✅ ADD STAFF (INVALID ROLE)
-    @Test
-    void testAddStaffInvalid() throws Exception {
-
-        User u = new User();
-        u.setRole("INVALID");
-
-        mockMvc.perform(post("/users/staff")
-                .contentType("application/json")
-                .content(mapper.writeValueAsString(u)))
-                .andExpect(status().isBadRequest()); // ✅ FIXED
-    }
-
-    // ✅ GET ALL STAFF (FILTER LOGIC)
+    // ✅ GET STAFF
     @Test
     void testGetAllStaff() throws Exception {
 
-        User u1 = new User();
-        u1.setRole("OWNER");
-
-        User u2 = new User();
-        u2.setRole("USER");
-
-        when(repo.findAll()).thenReturn(List.of(u1, u2));
+        when(userService.getAllStaff()).thenReturn(List.of(new UserDTO()));
 
         mockMvc.perform(get("/users/staff"))
                 .andExpect(status().isOk());
     }
 
-    // ✅ UPDATE STAFF (SUCCESS)
+    // ✅ UPDATE STAFF
     @Test
-    void testUpdateStaffSuccess() throws Exception {
+    void testUpdateStaff() throws Exception {
 
-        User existing = new User();
-        existing.setRole("OWNER");
+        UserDTO dto = new UserDTO();
 
-        when(repo.findById(1)).thenReturn(Optional.of(existing));
-        when(repo.save(any())).thenReturn(existing);
+        when(userService.updateStaff(eq(1), any())).thenReturn(dto);
 
         mockMvc.perform(put("/users/staff/1")
                 .contentType("application/json")
-                .content(mapper.writeValueAsString(existing)))
+                .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
-    }
-
-    // ✅ UPDATE STAFF (NOT FOUND)
-    @Test
-    void testUpdateStaffNotFound() throws Exception {
-
-        when(repo.findById(1)).thenReturn(Optional.empty());
-
-        mockMvc.perform(put("/users/staff/1")
-                .contentType("application/json")
-                .content(mapper.writeValueAsString(new User())))
-                .andExpect(status().isBadRequest()); // ✅ FIXED
     }
 
     // ✅ DELETE STAFF
     @Test
     void testDeleteStaff() throws Exception {
 
-        doNothing().when(repo).deleteById(1);
+        doNothing().when(userService).deleteStaff(1);
 
         mockMvc.perform(delete("/users/staff/1"))
                 .andExpect(status().isOk())

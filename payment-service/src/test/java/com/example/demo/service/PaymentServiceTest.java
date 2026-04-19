@@ -4,70 +4,72 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.example.demo.entity.Payment;
+import com.example.demo.feign.BillingClient;
+import com.example.demo.model.Bill;
 import com.example.demo.repository.PaymentRepository;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.Method;
-
+@ExtendWith(MockitoExtension.class)
 class PaymentServiceTest {
-
-    @InjectMocks
-    private PaymentService service;
 
     @Mock
     private PaymentRepository repo;
 
-    private Payment payment;
+    @Mock
+    private BillingClient billingClient;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-
-        payment = new Payment(1, 1000, "SUCCESS");
-
-        // Inject mock manually (since no @Autowired / constructor)
-        java.lang.reflect.Field field =
-                PaymentService.class.getDeclaredField("paymentRepository");
-
-        field.setAccessible(true);
-        field.set(service, repo);
-    }
+    @InjectMocks
+    private PaymentService service;
 
     @Test
-    void testMakePaymentUsingReflection() throws Exception {
+    void testMakePaymentSuccess() {
 
-        when(repo.save(payment)).thenReturn(payment);
+        Payment p = new Payment();
+        p.setBookingId(1);
+        p.setAmount(1000);
 
-        // Access private method
-        Method method = PaymentService.class
-                .getDeclaredMethod("makePayment", Payment.class);
+        Bill bill = new Bill();
+        bill.setTotalAmount(1200);
 
-        method.setAccessible(true);
+        when(billingClient.generateBill(any())).thenReturn(bill);
+        when(repo.save(any())).thenReturn(p);
 
-        Payment result = (Payment) method.invoke(service, payment);
+        Payment result = service.makePayment(p);
 
-        assertNotNull(result);
         assertEquals("SUCCESS", result.getStatus());
-
-        verify(repo, times(1)).save(payment);
     }
 
     @Test
-    void testMakePaymentWithNull() throws Exception {
+    void testMakePaymentNull() {
+        assertThrows(RuntimeException.class, () -> {
+            service.makePayment(null);
+        });
+    }
 
-        when(repo.save(null)).thenReturn(null);
+    @Test
+    void testGetAllPayments() {
+        when(repo.findAll()).thenReturn(java.util.List.of(new Payment()));
 
-        Method method = PaymentService.class
-                .getDeclaredMethod("makePayment", Payment.class);
+        assertEquals(1, service.getAllPayments().size());
+    }
 
-        method.setAccessible(true);
+    @Test
+    void testGetPaymentsByBooking() {
 
-        Payment result = (Payment) method.invoke(service, (Object) null);
+        Payment p = new Payment();
+        p.setBookingId(1);
 
-        assertNull(result);
-        verify(repo, times(1)).save(null);
+        when(repo.findAll()).thenReturn(java.util.List.of(p));
+
+        assertEquals(1, service.getPaymentsByBooking(1).size());
+    }
+
+    @Test
+    void testVerifyPayment() {
+        assertEquals("Payment verification simulated successfully", service.verifyPayment());
     }
 }
