@@ -1,6 +1,0 @@
-@FeignClient(name = "USER-SERVICE")
-public interface UserClient {
-
-    @GetMapping("/users/{id}")
-    User getUserById(@PathVariable int id);
-}
