@@ -1,4 +1,17 @@
+# STS / Eclipse
 .metadata/
-bin/
-target/
 .settings/
+bin/
+
+# Sonar
+.sonarlint/
+
+# Logs
+*.log
+*.gz
+
+# Maven
+target/
+
+# IDE
+.vscode/
