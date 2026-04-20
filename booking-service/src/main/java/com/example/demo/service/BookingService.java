@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.util.HashMap;
-import com.example.demo.feign.BillingClient;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,45 +30,41 @@ public class BookingService {
     private RoomClient roomClient;
 
     @Autowired
-    private PaymentClient paymentClient; 
-    
-    @Autowired
-    private BillingClient billingClient;
+    private PaymentClient paymentClient;
 
     @Async
     public CompletableFuture<Map<String, Object>> createBooking(BookingRequest request) {
 
+        // Save guest
         Guest savedGuest = guestRepository.save(request.getGuest());
 
+        // Prepare booking
         Booking booking = request.getBooking();
         booking.setGuestId(savedGuest.getId());
 
+        // Check room
         Room room = roomClient.getRoomById(booking.getRoomId());
 
         if (room == null || !room.isAvailable()) {
             throw new RuntimeException("Room not available");
         }
 
+        // Update room availability
         room.setAvailable(false);
         roomClient.updateRoom(room.getId(), room);
 
+        // Save booking
         booking.setStatus("CONFIRMED");
         Booking saved = bookingRepository.save(booking);
 
-        // Payment
+        // ✅ ONLY PAYMENT CALL (Billing handled inside Payment)
         Map<String, Object> paymentRequest = new HashMap<>();
         paymentRequest.put("bookingId", saved.getId());
         paymentRequest.put("amount", room.getPrice());
+
         paymentClient.makePayment(paymentRequest);
 
-        // Billing
-        Map<String, Object> billRequest = new HashMap<>();
-        billRequest.put("bookingId", saved.getId());
-        billRequest.put("amount", room.getPrice());
-        billRequest.put("tax", room.getPrice() * 0.1);
-        billingClient.generateBill(billRequest);
-
-        // ✅ FINAL RESPONSE
+        // Final response
         Map<String, Object> response = new HashMap<>();
         response.put("booking", saved);
         response.put("guest", savedGuest);

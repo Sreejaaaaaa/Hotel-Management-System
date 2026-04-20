@@ -28,9 +28,7 @@ class BookingServiceTest {
     @Mock
     private PaymentClient paymentClient;
 
-    @Mock
-    private BillingClient billingClient;
-
+    
     @InjectMocks
     private BookingService service;
 
@@ -78,7 +76,7 @@ class BookingServiceTest {
 
         assertNotNull(result.get());
         verify(paymentClient).makePayment(any());
-        verify(billingClient).generateBill(any());
+        
     }
 
     @Test

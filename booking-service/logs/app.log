@@ -2004,3 +2004,70 @@ java.lang.IllegalStateException: ApplicationContext failure threshold (1) exceed
 2026-04-19T14:25:01.390+05:30  INFO 14272 --- [BOOKING-SERVICE] [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
 2026-04-19T14:25:01.528+05:30  INFO 14272 --- [BOOKING-SERVICE] [main] c.e.d.controller.BookingControllerTest   : Started BookingControllerTest in 4.841 seconds (process running for 29.854)
 2026-04-19T14:25:02.691+05:30  INFO 14272 --- [BOOKING-SERVICE] [main] c.e.demo.controller.BookingController    : Fetching all bookings
+2026-04-20T15:35:51.319+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] c.e.demo.BookingServiceApplication       : Starting BookingServiceApplication using Java 17.0.18 with PID 9936 (C:\project\booking-service\target\classes started by HP in C:\project\booking-service)
+2026-04-20T15:35:51.323+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] c.e.demo.BookingServiceApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-04-20T15:35:52.232+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-20T15:35:52.375+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 134 ms. Found 2 JPA repository interfaces.
+2026-04-20T15:35:52.612+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=6ba8cb82-e0c6-32b7-8a51-425d9768e9b9
+2026-04-20T15:35:52.875+05:30  WARN 9936 --- [BOOKING-SERVICE] [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2026-04-20T15:35:52.881+05:30  WARN 9936 --- [BOOKING-SERVICE] [main] trationDelegate$BeanPostProcessorChecker : Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2026-04-20T15:35:53.202+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-04-20T15:35:53.212+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-20T15:35:53.212+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-04-20T15:35:53.294+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-20T15:35:53.295+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1879 ms
+2026-04-20T15:35:53.518+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-20T15:35:53.572+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-04-20T15:35:53.609+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-20T15:35:53.799+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-20T15:35:53.832+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-20T15:35:54.089+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1bcb8599
+2026-04-20T15:35:54.091+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-20T15:35:54.152+05:30  WARN 9936 --- [BOOKING-SERVICE] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-20T15:35:55.090+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-20T15:35:55.172+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-20T15:35:55.982+05:30  WARN 9936 --- [BOOKING-SERVICE] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-20T15:35:56.305+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'ROOM-SERVICE' URL not provided. Will try picking an instance via load-balancing.
+2026-04-20T15:35:56.389+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'PAYMENT-SERVICE' URL not provided. Will try picking an instance via load-balancing.
+2026-04-20T15:35:57.541+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-04-20T15:35:57.582+05:30  WARN 9936 --- [BOOKING-SERVICE] [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-04-20T15:35:57.651+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-04-20T15:35:57.689+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-04-20T15:35:57.695+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-20T15:35:57.723+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-04-20T15:35:57.723+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-04-20T15:35:57.725+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-04-20T15:35:57.725+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-04-20T15:35:57.725+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-04-20T15:35:57.726+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-04-20T15:35:57.726+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-04-20T15:35:58.146+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-04-20T15:35:58.149+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-04-20T15:35:58.152+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-04-20T15:35:58.157+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1776679558156 with initial instances count: 4
+2026-04-20T15:35:58.174+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application BOOKING-SERVICE with eureka with status UP
+2026-04-20T15:35:58.175+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1776679558175, current=UP, previous=STARTING]
+2026-04-20T15:35:58.179+05:30  INFO 9936 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082: registering service...
+2026-04-20T15:35:58.210+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path ''
+2026-04-20T15:35:58.212+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2026-04-20T15:35:58.239+05:30  INFO 9936 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082 - registration status: 204
+2026-04-20T15:35:58.357+05:30  INFO 9936 --- [BOOKING-SERVICE] [main] c.e.demo.BookingServiceApplication       : Started BookingServiceApplication in 7.507 seconds (process running for 8.112)
+2026-04-20T15:39:58.913+05:30  INFO 9936 --- [BOOKING-SERVICE] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-20T15:39:58.913+05:30  INFO 9936 --- [BOOKING-SERVICE] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-20T15:39:58.918+05:30  INFO 9936 --- [BOOKING-SERVICE] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2026-04-20T15:40:57.737+05:30  INFO 9936 --- [BOOKING-SERVICE] [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-20T15:42:17.512+05:30  INFO 9936 --- [BOOKING-SERVICE] [task-1] com.example.demo.aop.LoggingAspect       : ➡️ Entering: createBooking
+2026-04-20T15:42:20.617+05:30  INFO 9936 --- [BOOKING-SERVICE] [task-1] com.example.demo.aop.LoggingAspect       : ✅ Method: createBooking returned: java.util.concurrent.CompletableFuture@2a05c548[Completed normally]
+2026-04-20T15:42:20.617+05:30  INFO 9936 --- [BOOKING-SERVICE] [task-1] com.example.demo.aop.LoggingAspect       : ⬅️ Exiting: createBooking
+2026-04-20T15:45:57.745+05:30  INFO 9936 --- [BOOKING-SERVICE] [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-20T15:50:57.753+05:30  INFO 9936 --- [BOOKING-SERVICE] [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-20T15:55:57.766+05:30  INFO 9936 --- [BOOKING-SERVICE] [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-20T15:58:57.638+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2026-04-20T15:58:57.640+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application BOOKING-SERVICE with eureka with status DOWN
+2026-04-20T15:58:57.640+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1776680937640, current=DOWN, previous=UP]
+2026-04-20T15:58:57.640+05:30  INFO 9936 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082: registering service...
+2026-04-20T15:58:57.653+05:30  INFO 9936 --- [BOOKING-SERVICE] [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_BOOKING-SERVICE/DESKTOP-I8FRD6A:BOOKING-SERVICE:8082 - registration status: 204
+2026-04-20T15:58:57.671+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-20T15:58:57.675+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-20T15:58:57.687+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-20T15:58:57.688+05:30  INFO 9936 --- [BOOKING-SERVICE] [RMI TCP Connection(25)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...

@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.billing.dto.BillDTO;
 import com.example.billing.entity.Bill;
 import com.example.billing.service.BillService;
-
-import jakarta.validation.Valid;  
 
 @RestController
 @RequestMapping("/bill")
@@ -17,7 +16,23 @@ public class BillController {
     private BillService billService;
 
     @PostMapping("/generate")
-    public ResponseEntity<Bill> generateBill(@Valid @RequestBody Bill bill) { 
-        return ResponseEntity.ok(billService.generateBill(bill));
+    public ResponseEntity<BillDTO> generateBill(@RequestBody BillDTO dto) {
+
+        // 🔹 DTO → Entity
+        Bill bill = new Bill();
+        bill.setBookingId(dto.getBookingId());
+        bill.setAmount(dto.getAmount());
+
+        // 🔹 Call service
+        Bill saved = billService.generateBill(bill);
+
+        // 🔹 Entity → DTO
+        BillDTO response = new BillDTO();
+        response.setBookingId(saved.getBookingId());
+        response.setAmount(saved.getAmount());
+        response.setTax(saved.getTax());
+        response.setTotalAmount(saved.getTotalAmount());
+
+        return ResponseEntity.ok(response);
     }
 }

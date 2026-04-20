@@ -9,8 +9,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-        
+      
     
     @NotBlank(message = "Room type is required")
     private String type; // DELUXE / AC / NON-AC

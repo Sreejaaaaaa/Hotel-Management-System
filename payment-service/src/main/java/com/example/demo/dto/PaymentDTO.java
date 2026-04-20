@@ -18,31 +18,24 @@ public class PaymentDTO {
     public Integer getBookingId() {
         return bookingId;
     }
-
     public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
     }
-
     public double getAmount() {
         return amount;
     }
-
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
-    }
-    
+    }    
     public String getTransactionId() {
         return transactionId;
     }
-
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }

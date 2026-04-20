@@ -19,41 +19,45 @@ public class RoomService {
         return repo.save(room);
     }
 
-    //Get All Rooms
+    // Get All Rooms
     public List<Room> getAllRooms() {
         return repo.findAll();
     }
 
-    // Get Room by ID
+    // Get Room by ID (FIXED)
     public Room getRoomById(int id) {
-        return repo.findById(id).orElse(null);
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
     }
 
-    // Get Available Rooms (FIXED)
+    // Get Available Rooms
     public List<Room> getAvailableRooms() {
         return repo.findAll()
                 .stream()
-                .filter(room -> room.isAvailable())   
+                .filter(Room::isAvailable)
                 .toList();
     }
 
     // Update Room (FIXED)
     public Room updateRoom(int id, Room room) {
-        Room existing = repo.findById(id).orElse(null);
 
-        if (existing == null) {
-            return null;
-        }
+        Room existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
 
-        existing.setType(room.getType());  
+        existing.setType(room.getType());
         existing.setPrice(room.getPrice());
         existing.setAvailable(room.isAvailable());
 
         return repo.save(existing);
     }
 
-    // ✅ Delete Room (FIXED)
+    // Delete Room (FIXED)
     public void deleteRoom(int id) {
+
+        if (!repo.existsById(id)) {
+            throw new RuntimeException("Room not found");
+        }
+
         repo.deleteById(id);
     }
 }

@@ -24,6 +24,7 @@ public class RoomController {
     @Autowired
     private RoomService service;
 
+    // Add Room
     @PostMapping
     public RoomDTO addRoom(@Valid @RequestBody RoomDTO dto) {
 
@@ -43,6 +44,7 @@ public class RoomController {
         return response;
     }
 
+    // Get All Rooms
     @GetMapping
     public List<RoomDTO> getRooms() {
 
@@ -59,10 +61,11 @@ public class RoomController {
                 .collect(Collectors.toList());
     }
 
+    // Get Room by ID (FIXED)
     @GetMapping("/{id}")
     public RoomDTO getRoomById(@PathVariable int id) {
 
-        Room room = service.getRoomById(id);
+        Room room = service.getRoomById(id); // already throws exception if not found
 
         RoomDTO dto = new RoomDTO();
         dto.setId(room.getId());
@@ -73,6 +76,7 @@ public class RoomController {
         return dto;
     }
 
+    // Get Available Rooms
     @GetMapping("/available")
     public List<RoomDTO> getAvailableRooms() {
 
@@ -89,7 +93,7 @@ public class RoomController {
                 .collect(Collectors.toList());
     }
 
-
+    // Search Rooms
     @GetMapping("/search")
     public List<RoomDTO> searchRooms() {
 
@@ -106,7 +110,7 @@ public class RoomController {
                 .collect(Collectors.toList());
     }
 
-
+    // Update Room
     @PutMapping("/{id}")
     public RoomDTO updateRoom(@PathVariable int id, @RequestBody RoomDTO dto) {
 
@@ -126,10 +130,12 @@ public class RoomController {
         return response;
     }
 
-
+    // Delete Room
     @DeleteMapping("/{id}")
     public String deleteRoom(@PathVariable int id) {
+
         service.deleteRoom(id);
+
         return "Room deleted successfully";
     }
 }
