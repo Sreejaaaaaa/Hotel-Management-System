@@ -54,15 +54,15 @@ public class BookingService {
         roomClient.updateRoom(room.getId(), room);
 
         // Save booking
-        booking.setStatus("CONFIRMED");
+        booking.setStatus("PENDING");
         Booking saved = bookingRepository.save(booking);
 
         // ✅ ONLY PAYMENT CALL (Billing handled inside Payment)
-        Map<String, Object> paymentRequest = new HashMap<>();
-        paymentRequest.put("bookingId", saved.getId());
-        paymentRequest.put("amount", room.getPrice());
-
-        paymentClient.makePayment(paymentRequest);
+//        Map<String, Object> paymentRequest = new HashMap<>();
+//        paymentRequest.put("bookingId", saved.getId());
+//        paymentRequest.put("amount", room.getPrice());
+//
+//        paymentClient.makePayment(paymentRequest);
 
         // Final response
         Map<String, Object> response = new HashMap<>();

@@ -1,25 +1,20 @@
 package com.example.demo.controller;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
 import com.example.demo.dto.PaymentDTO;
 import com.example.demo.entity.Payment;
 import com.example.demo.service.PaymentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.*;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PaymentController.class)
@@ -29,101 +24,137 @@ class PaymentControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PaymentService paymentService;   // ✅ CORRECT
+    private PaymentService paymentService;
 
-    private ObjectMapper mapper = new ObjectMapper();
-
-    // ✅ MAKE PAYMENT
+    // ✅ TEST CREATE PAYMENT
     @Test
     void testMakePayment() throws Exception {
 
-        PaymentDTO dto = new PaymentDTO();
-        dto.setBookingId(1);
-        dto.setAmount(1000);
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", "order_123");
+        response.put("amount", 200.0);
+        response.put("currency", "INR");
+        response.put("paymentId", 1);
 
-        Payment saved = new Payment();
-        saved.setBookingId(1);
-        saved.setAmount(1000);
-        saved.setStatus("SUCCESS");
-        saved.setTransactionId("TXN123");
+        when(paymentService.makePayment(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(response);
 
-        when(paymentService.makePayment(Mockito.any())).thenReturn(saved);
+        String requestJson = """
+                {
+                    "bookingId": 1,
+                    "amount": 200.0
+                }
+                """;
 
         mockMvc.perform(post("/payments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("SUCCESS"))
-                .andExpect(jsonPath("$.transactionId").value("TXN123"));
+                .andExpect(jsonPath("$.orderId").value("order_123"))
+                .andExpect(jsonPath("$.amount").value(200.0))
+                .andExpect(jsonPath("$.currency").value("INR"));
     }
 
-    // ✅ VALIDATION FAIL
-    @Test
-    void testMakePaymentValidationFail() throws Exception {
-
-        PaymentDTO dto = new PaymentDTO();
-        dto.setBookingId(0);
-        dto.setAmount(-10);
-
-        mockMvc.perform(post("/payments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest());
-    }
-
-    // ✅ GET ALL
+    // ✅ TEST GET ALL PAYMENTS
     @Test
     void testGetAllPayments() throws Exception {
 
         Payment p = new Payment();
         p.setBookingId(1);
-        p.setAmount(1000);
+        p.setAmount(100.0);
         p.setStatus("SUCCESS");
+        p.setTransactionId("txn_123");
 
         when(paymentService.getAllPayments()).thenReturn(List.of(p));
 
         mockMvc.perform(get("/payments"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].bookingId").value(1));
+                .andExpect(jsonPath("$[0].bookingId").value(1))
+                .andExpect(jsonPath("$[0].amount").value(100.0))
+                .andExpect(jsonPath("$[0].status").value("SUCCESS"))
+                .andExpect(jsonPath("$[0].transactionId").value("txn_123"));
     }
 
-    // ✅ FILTER BY BOOKING
+    // ✅ TEST GET BY BOOKING ID
     @Test
     void testGetPaymentsByBooking() throws Exception {
 
         Payment p = new Payment();
-        p.setBookingId(1);
-        p.setAmount(1000);
+        p.setBookingId(2);
+        p.setAmount(150.0);
         p.setStatus("SUCCESS");
+        p.setTransactionId("txn_456");
 
-        when(paymentService.getPaymentsByBooking(1))
-                .thenReturn(List.of(p));
+        when(paymentService.getPaymentsByBooking(2)).thenReturn(List.of(p));
 
-        mockMvc.perform(get("/payments/booking/1"))
+        mockMvc.perform(get("/payments/booking/2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].bookingId").value(1));
+                .andExpect(jsonPath("$[0].bookingId").value(2));
     }
 
-    // ✅ EMPTY LIST
+    // ✅ TEST VERIFY PAYMENT SUCCESS
     @Test
-    void testGetPaymentsByBookingEmpty() throws Exception {
+    void testVerifyPayment_success() throws Exception {
 
-        when(paymentService.getPaymentsByBooking(1))
-                .thenReturn(List.of());
+        when(paymentService.generateSignature("order1", "pay1"))
+                .thenReturn("abc123");
 
-        mockMvc.perform(get("/payments/booking/1"))
+        String requestJson = """
+                {
+                    "orderId": "order1",
+                    "paymentId": "pay1",
+                    "signature": "abc123"
+                }
+                """;
+
+        mockMvc.perform(post("/payments/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+                .andExpect(jsonPath("$.status").value("success"));
     }
 
-    // ✅ VERIFY PAYMENT
+    // ✅ TEST VERIFY PAYMENT FAILURE
     @Test
-    void testVerifyPayment() throws Exception {
+    void testVerifyPayment_invalidSignature() throws Exception {
 
-        when(paymentService.verifyPayment()).thenReturn("VERIFIED");
+        when(paymentService.generateSignature("order1", "pay1"))
+                .thenReturn("correct_sig");
 
-        mockMvc.perform(post("/payments/verify"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("VERIFIED"));
+        String requestJson = """
+                {
+                    "orderId": "order1",
+                    "paymentId": "pay1",
+                    "signature": "wrong_sig"
+                }
+                """;
+
+        mockMvc.perform(post("/payments/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value("failed"));
+    }
+
+    // ✅ TEST VERIFY PAYMENT EXCEPTION
+    @Test
+    void testVerifyPayment_exception() throws Exception {
+
+        when(paymentService.generateSignature("order1", "pay1"))
+                .thenThrow(new RuntimeException("Error"));
+
+        String requestJson = """
+                {
+                    "orderId": "order1",
+                    "paymentId": "pay1",
+                    "signature": "abc"
+                }
+                """;
+
+        mockMvc.perform(post("/payments/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status").value("error"));
     }
 }
