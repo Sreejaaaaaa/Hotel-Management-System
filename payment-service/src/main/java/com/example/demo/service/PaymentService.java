@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,10 @@ import org.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.codec.binary.Hex;
 
 @Service
 public class PaymentService {
@@ -35,7 +41,8 @@ public class PaymentService {
     @Value("${razorpay.secret}")
     private String secret;
 
-    public Payment makePayment(Payment payment) {
+    // ✅ CREATE PAYMENT + RAZORPAY ORDER
+    public Map<String, Object> makePayment(Payment payment) {
 
         // Step 1: Create bill
         Bill bill = new Bill();
@@ -54,7 +61,7 @@ public class PaymentService {
             RazorpayClient razorpay = new RazorpayClient(key, secret);
 
             JSONObject options = new JSONObject();
-            options.put("amount", (int) Math.round(payment.getAmount() * 100)); // FIXED
+            options.put("amount", (int) Math.round(payment.getAmount() * 100)); // in paise
             options.put("currency", "INR");
             options.put("receipt", "txn_" + System.currentTimeMillis());
 
@@ -62,8 +69,9 @@ public class PaymentService {
 
             log.info("Razorpay Order Created: {}", order.toString());
 
+            // ✅ IMPORTANT CHANGE
             payment.setTransactionId(order.get("id").toString());
-            payment.setStatus("SUCCESS");
+            payment.setStatus("CREATED");
 
         } catch (Exception e) {
             log.error("Razorpay ERROR", e);
@@ -72,10 +80,20 @@ public class PaymentService {
             payment.setTransactionId("FAILED_TXN");
         }
 
-        return paymentRepository.save(payment);
+        // Save payment
+        Payment savedPayment = paymentRepository.save(payment);
+
+        // ✅ RETURN ORDER DETAILS (VERY IMPORTANT)
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", savedPayment.getTransactionId());
+        response.put("amount", savedPayment.getAmount());
+        response.put("currency", "INR");
+        response.put("paymentId", savedPayment.getId());
+
+        return response;
     }
 
-    
+    // (We will improve this later)
     public String verifyPayment() {
         return "Payment verification simulated successfully";
     }
@@ -90,4 +108,20 @@ public class PaymentService {
                 .filter(p -> p.getBookingId() == bookingId)
                 .toList();
     }
+    
+    public String generateSignature(String orderId, String paymentId) throws Exception {
+
+        String data = orderId + "|" + paymentId;
+
+        Mac mac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
+        mac.init(secretKey);
+
+        byte[] rawHmac = mac.doFinal(data.getBytes());
+        return Hex.encodeHexString(rawHmac);
+    }
+
+    
+    
+    
 }
