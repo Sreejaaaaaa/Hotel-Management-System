@@ -1,35 +1,25 @@
 package com.example.demo;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@WebMvcTest(controllers = TestController.class)
+class GlobalExceptionHandlerTest {
 
-@RestControllerAdvice
-public class GlobalExceptionHandlerTest {
+    @Autowired
+    private MockMvc mockMvc;
 
-// ✅ Validation errors
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidation(MethodArgumentNotValidException ex) {
+    @Test
+    void testRuntimeExceptionHandler() throws Exception {
 
-        Map<String, String> errors = new HashMap<>();
-
-        ex.getBindingResult().getFieldErrors()
-                .forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-
-        return errors;
-    }
-
-//    // ✅ Runtime errors
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleRuntime(RuntimeException ex) {
-        return ex.getMessage();
+        mockMvc.perform(get("/test-error"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message")
+                        .value("Something went wrong"));
     }
 }
-
-

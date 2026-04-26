@@ -68,4 +68,23 @@ class BookingControllerTest {
                 .content("{\"guest\":{},\"booking\":{}}"))
                 .andExpect(status().isOk());
     }
+    @Test
+    void testAddGuest() throws Exception {
+
+        Guest g = new Guest();
+        g.setId(1);
+        g.setName("John");
+
+        when(guestRepo.save(any())).thenReturn(g);
+
+        mockMvc.perform(post("/booking/guest")
+                .contentType("application/json")
+                .content("""
+                {
+                  "name": "John",
+                  "email": "john@mail.com"
+                }
+                """))
+                .andExpect(status().isOk());
+    }
 }
