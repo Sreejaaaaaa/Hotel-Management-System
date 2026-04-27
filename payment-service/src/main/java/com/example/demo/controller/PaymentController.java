@@ -24,7 +24,6 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    // ✅ CREATE PAYMENT ORDER
     @PostMapping
     public Map<String, Object> makePayment(@Valid @RequestBody PaymentDTO dto) {
 
@@ -34,7 +33,6 @@ public class PaymentController {
         payment.setBookingId(dto.getBookingId());
         payment.setAmount(dto.getAmount());
 
-        // ✅ RETURN MAP (VERY IMPORTANT)
         return paymentService.makePayment(payment);
     }
 

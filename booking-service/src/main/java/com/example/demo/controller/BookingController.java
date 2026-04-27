@@ -13,19 +13,14 @@ import com.example.demo.entity.Booking;
 import com.example.demo.entity.Guest;
 import com.example.demo.model.BookingRequest;
 import com.example.demo.dto.BookingDTO;
+import com.example.demo.dto.GuestDTO;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.GuestRepository;
 import com.example.demo.service.BookingService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
-
-    private static final Logger log =
-            LoggerFactory.getLogger(BookingController.class);
 
     @Autowired
     private BookingService bookingService;
@@ -36,34 +31,37 @@ public class BookingController {
     @Autowired
     private GuestRepository guestRepository;
 
-    // ✅ ADD GUEST (kept same)
+    // ✅ ADD GUEST
     @PostMapping("/guest")
     public Guest addGuest(@RequestBody Guest guest) {
         return guestRepository.save(guest);
     }
 
-    // ✅ CREATE BOOKING (already using DTO: BookingRequest)
+    // ✅ CREATE BOOKING
     @PostMapping
-    public CompletableFuture<Map<String, Object>> createBooking(@Valid @RequestBody BookingRequest request) {
+    public CompletableFuture<Map<String, Object>> createBooking(
+            @Valid @RequestBody BookingRequest request) {
         return bookingService.createBooking(request);
     }
 
-    // ✅ VIEW BOOKINGS (converted to DTO)
+    // ✅ GET ALL BOOKINGS (WITH GUEST DATA)
     @GetMapping("/all")
     public List<BookingDTO> getAllBookings() {
-        log.info("Fetching all bookings");
 
         return bookingRepository.findAll()
                 .stream()
-                .map(b -> {
-                    BookingDTO dto = new BookingDTO();
-                    dto.setBookingId(b.getId());
-                    dto.setRoomId(b.getRoomId());
-                    dto.setGuestId(b.getGuestId());
-                    dto.setStatus(b.getStatus());
-                    return dto;
-                })
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    // ✅ GET SINGLE BOOKING (IMPORTANT FOR DETAILS PAGE)
+    @GetMapping("/{id}")
+    public BookingDTO getBookingById(@PathVariable int id) {
+
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        return convertToDTO(booking);
     }
 
     // ✅ DELETE BOOKING
@@ -73,41 +71,28 @@ public class BookingController {
         return "Booking deleted successfully";
     }
 
-    // ✅ UPDATE BOOKING (NOW USING DTO)
+    // ✅ UPDATE BOOKING STATUS ONLY
     @PutMapping("/update/{id}")
     public BookingDTO updateBooking(@PathVariable int id, @RequestBody BookingDTO dto) {
 
-        Booking existing = bookingRepository.findById(id).orElse(null);
+        Booking existing = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-        if (existing == null) {
-            throw new RuntimeException("Booking not found");
+        if (dto.getStatus() != null) {
+            existing.setStatus(dto.getStatus());
         }
-
-        // DTO → Entity
-        existing.setRoomId(dto.getRoomId());
-        existing.setGuestId(dto.getGuestId());
-        existing.setStatus(dto.getStatus());
 
         Booking saved = bookingRepository.save(existing);
 
-        // Entity → DTO
-        BookingDTO response = new BookingDTO();
-        response.setBookingId(saved.getId());
-        response.setRoomId(saved.getRoomId());
-        response.setGuestId(saved.getGuestId());
-        response.setStatus(saved.getStatus());
-
-        return response;
+        return convertToDTO(saved);
     }
 
+    // ✅ UPDATE GUEST
     @PutMapping("/guest/{id}")
     public Guest updateGuest(@PathVariable int id, @RequestBody Guest guest) {
 
-        Guest existing = guestRepository.findById(id).orElse(null);
-
-        if (existing == null) {
-            throw new RuntimeException("Guest not found");
-        }
+        Guest existing = guestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Guest not found"));
 
         existing.setName(guest.getName());
         existing.setEmail(guest.getEmail());
@@ -118,9 +103,43 @@ public class BookingController {
         return guestRepository.save(existing);
     }
 
+    // ✅ DELETE GUEST
     @DeleteMapping("/guest/{id}")
     public String deleteGuest(@PathVariable int id) {
         guestRepository.deleteById(id);
         return "Guest deleted successfully";
+    }
+
+    // ✅ CANCEL BOOKING
+    @PutMapping("/cancel/{id}")
+    public BookingDTO cancelBooking(@PathVariable int id) {
+
+        Booking cancelled = bookingService.cancelBooking(id);
+
+        return convertToDTO(cancelled);
+    }
+
+    // 🔥 CENTRALIZED DTO CONVERTER (VERY IMPORTANT)
+    private BookingDTO convertToDTO(Booking b) {
+
+        BookingDTO dto = new BookingDTO();
+        dto.setBookingId(b.getId());
+        dto.setRoomId(b.getRoomId());
+        dto.setStatus(b.getStatus());
+
+        // fetch guest
+        if (b.getGuestId() >0) {
+            guestRepository.findById(b.getGuestId()).ifPresent(g -> {
+                GuestDTO guestDTO = new GuestDTO();
+                guestDTO.setId(g.getId());
+                guestDTO.setName(g.getName());
+                guestDTO.setEmail(g.getEmail());
+                guestDTO.setPhone(g.getPhone());
+
+                dto.setGuest(guestDTO);
+            });
+        }
+
+        return dto;
     }
 }

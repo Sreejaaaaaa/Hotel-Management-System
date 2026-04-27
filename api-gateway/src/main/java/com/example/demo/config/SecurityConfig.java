@@ -35,85 +35,60 @@ public class SecurityConfig {
             			    "/auth-service/**"
             			).permitAll()
 
-            			// ✅ ADD THIS LINE
             			.pathMatchers(HttpMethod.POST, "/user-service/users").permitAll()
-                // =========================================================
-                // 👑 OWNER (FULL CONTROL)
-                // =========================================================
+
 
                 .pathMatchers("/department-service/**").hasRole("OWNER")
                 .pathMatchers("/report-service/**").hasRole("OWNER")
                 .pathMatchers("/user-service/users/staff/**").hasRole("OWNER")
 
-                // =========================================================
-                // 👨‍💼 ROOM / INVENTORY (OWNER + MANAGER)
-                // =========================================================
 
-                // VIEW (all roles)
                 .pathMatchers(HttpMethod.GET, "/room-service/**")
                     .hasAnyRole("OWNER", "MANAGER", "RECEPTIONIST")
 
-                // ADD / UPDATE (Owner + Manager)
                 .pathMatchers(HttpMethod.POST, "/room-service/**")
                     .hasAnyRole("OWNER", "MANAGER")
 
                 .pathMatchers(HttpMethod.PUT, "/room-service/**")
                     .hasAnyRole("OWNER", "MANAGER")
 
-                // DELETE (Owner only)
                 .pathMatchers(HttpMethod.DELETE, "/room-service/**")
                     .hasRole("OWNER")
 
+//
+//                .pathMatchers(HttpMethod.GET, "/inventory-service/**")
+//                    .hasAnyRole("OWNER", "MANAGER")
+//
+//                .pathMatchers(HttpMethod.POST, "/inventory-service/**")
+//                    .hasAnyRole("OWNER", "MANAGER")
+//
+//                .pathMatchers(HttpMethod.PUT, "/inventory-service/**")
+//                    .hasAnyRole("OWNER", "MANAGER")
+//
+//                .pathMatchers(HttpMethod.DELETE, "/inventory-service/**")
+//                    .hasRole("OWNER")
 
-                // INVENTORY
-                .pathMatchers(HttpMethod.GET, "/inventory-service/**")
-                    .hasAnyRole("OWNER", "MANAGER")
-
-                .pathMatchers(HttpMethod.POST, "/inventory-service/**")
-                    .hasAnyRole("OWNER", "MANAGER")
-
-                .pathMatchers(HttpMethod.PUT, "/inventory-service/**")
-                    .hasAnyRole("OWNER", "MANAGER")
-
-                .pathMatchers(HttpMethod.DELETE, "/inventory-service/**")
-                    .hasRole("OWNER")
-
-                // =========================================================
-                // 👩‍💻 BOOKING (ALL ROLES)
-                // =========================================================
 
                 .pathMatchers("/booking-service/**")
                     .hasAnyRole("OWNER", "MANAGER", "RECEPTIONIST")
 
-                // =========================================================
-                // 💳 PAYMENT (OWNER + RECEPTIONIST)
-                // =========================================================
 
                 .pathMatchers("/payment-service/**")
                     .hasAnyRole("OWNER", "RECEPTIONIST")
 
-                // =========================================================
-                // 👥 USER / GUEST MANAGEMENT
-                // =========================================================
-
-                // VIEW USERS
                 .pathMatchers(HttpMethod.GET, "/user-service/users/**")
                     .hasAnyRole("OWNER", "RECEPTIONIST")
 
-                // ADD / UPDATE GUEST
                 .pathMatchers(HttpMethod.POST, "/user-service/users/**")
                     .hasAnyRole("OWNER", "RECEPTIONIST")
 
                 .pathMatchers(HttpMethod.PUT, "/user-service/users/**")
                     .hasAnyRole("OWNER", "RECEPTIONIST")
 
-                // DELETE USER → OWNER ONLY
+                    
                 .pathMatchers(HttpMethod.DELETE, "/user-service/users/**")
                     .hasRole("OWNER")
 
-                // =========================================================
-                // 🔐 EVERYTHING ELSE
-                // =========================================================
 
                 .anyExchange().authenticated()
             )

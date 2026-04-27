@@ -31,6 +31,7 @@ public class BookingService {
 
     @Autowired
     private PaymentClient paymentClient;
+    
 
     @Async
     public CompletableFuture<Map<String, Object>> createBooking(BookingRequest request) {
@@ -70,5 +71,24 @@ public class BookingService {
         response.put("guest", savedGuest);
 
         return CompletableFuture.completedFuture(response);
+    }
+    
+    public Booking cancelBooking(int bookingId) {
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        // ✅ update status
+        booking.setStatus("CANCELLED");
+
+        // ✅ FREE the room
+        Room room = roomClient.getRoomById(booking.getRoomId());
+
+        if (room != null) {
+            room.setAvailable(true);
+            roomClient.updateRoom(room.getId(), room);
+        }
+
+        return bookingRepository.save(booking);
     }
 }

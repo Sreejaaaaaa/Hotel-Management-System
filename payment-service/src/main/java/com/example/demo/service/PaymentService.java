@@ -41,18 +41,14 @@ public class PaymentService {
     @Value("${razorpay.secret}")
     private String secret;
 
-    // ✅ CREATE PAYMENT + RAZORPAY ORDER
     public Map<String, Object> makePayment(Payment payment) {
 
-        // Step 1: Create bill
         Bill bill = new Bill();
         bill.setBookingId((long) payment.getBookingId());
         bill.setAmount(payment.getAmount());
 
-        // Step 2: Call billing
         Bill generatedBill = billingClient.generateBill(bill);
 
-        // Step 3: Update amount
         payment.setAmount(generatedBill.getTotalAmount());
 
         try {
@@ -69,7 +65,6 @@ public class PaymentService {
 
             log.info("Razorpay Order Created: {}", order.toString());
 
-            // ✅ IMPORTANT CHANGE
             payment.setTransactionId(order.get("id").toString());
             payment.setStatus("CREATED");
 
@@ -80,10 +75,8 @@ public class PaymentService {
             payment.setTransactionId("FAILED_TXN");
         }
 
-        // Save payment
         Payment savedPayment = paymentRepository.save(payment);
 
-        // ✅ RETURN ORDER DETAILS (VERY IMPORTANT)
         Map<String, Object> response = new HashMap<>();
         response.put("orderId", savedPayment.getTransactionId());
         response.put("amount", savedPayment.getAmount());
@@ -93,7 +86,6 @@ public class PaymentService {
         return response;
     }
 
-    // (We will improve this later)
     public String verifyPayment() {
         return "Payment verification simulated successfully";
     }

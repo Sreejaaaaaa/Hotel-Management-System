@@ -18,15 +18,12 @@ public class BillController {
     @PostMapping("/generate")
     public ResponseEntity<BillDTO> generateBill(@RequestBody BillDTO dto) {
 
-        // 🔹 DTO → Entity
         Bill bill = new Bill();
         bill.setBookingId(dto.getBookingId());
         bill.setAmount(dto.getAmount());
 
-        // 🔹 Call service
         Bill saved = billService.generateBill(bill);
 
-        // 🔹 Entity → DTO
         BillDTO response = new BillDTO();
         response.setBookingId(saved.getBookingId());
         response.setAmount(saved.getAmount());
